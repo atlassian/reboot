@@ -29,14 +29,16 @@ object Common {
     publishTo <<= version { (v: String) =>
       val nexus = "https://maven.atlassian.com/"
       if (v.trim.endsWith("SNAPSHOT")) 
-        Some("snapshots" at nexus + "private-snapshot")
+        Some("snapshots" at nexus + "3rdparty-snapshot")
       else
-        Some("releases"  at nexus + "private")
+        Some("releases"  at nexus + "3rdparty")
     },
 
     publishArtifact in Test := false,
 
     licenses := Seq("LGPL v3" -> url("http://www.gnu.org/licenses/lgpl.txt")),
+
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
 
     pomExtra := (
       <scm>
