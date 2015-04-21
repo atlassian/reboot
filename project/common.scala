@@ -3,7 +3,7 @@ import sbt._
 object Common {
   import Keys._
 
-  val defaultScalaVersion = "2.11.2"
+  val defaultScalaVersion = "2.11.6"
 
   val testSettings:Seq[Setting[_]] = Seq(
     testOptions in Test += Tests.Cleanup { loader =>
@@ -13,9 +13,9 @@ object Common {
   )
 
   val settings: Seq[Setting[_]] = ls.Plugin.lsSettings ++ Seq(
-    version := "0.11.2",
+    version := "0.11.2-atlassian-1",
 
-    crossScalaVersions := Seq("2.9.3", "2.10.4", "2.11.2"),
+    crossScalaVersions := Seq("2.10.5", "2.11.6"),
 
     scalaVersion := defaultScalaVersion,
 
@@ -27,11 +27,11 @@ object Common {
     publishMavenStyle := true,
 
     publishTo <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
+      val nexus = "https://maven.atlassian.com/"
       if (v.trim.endsWith("SNAPSHOT")) 
-        Some("snapshots" at nexus + "content/repositories/snapshots") 
+        Some("snapshots" at nexus + "private-snapshot")
       else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+        Some("releases"  at nexus + "private")
     },
 
     publishArtifact in Test := false,
@@ -40,8 +40,8 @@ object Common {
 
     pomExtra := (
       <scm>
-        <url>git@github.com:dispatch/reboot.git</url>
-        <connection>scm:git:git@github.com:dispatch/reboot.git</connection>
+        <url>git@github.com:atlassian/reboot.git</url>
+        <connection>scm:git:git@github.com:atlassian/reboot.git</connection>
       </scm>
       <developers>
         <developer>

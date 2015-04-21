@@ -8,10 +8,6 @@ libraryDependencies +=
 
 Seq(lsSettings :_*)
 
-Seq(buildInfoSettings:_*)
-
-sourceGenerators in Compile <+= buildInfo
-
-buildInfoKeys := Seq[BuildInfoKey](version)
+buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion)
 
 buildInfoPackage := "dispatch"

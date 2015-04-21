@@ -6,7 +6,7 @@ object Builds extends sbt.Build {
   /** Aggregates tasks for all projects */
   lazy val root = Project(
     "dispatch-all", file("."), settings =
-      Defaults.defaultSettings ++ Common.settings ++ Seq(
+      Defaults.coreDefaultSettings ++ Common.settings ++ Seq(
         ls.Plugin.LsKeys.skipWrite := true,
       publish := { }
       )
@@ -22,13 +22,14 @@ object Builds extends sbt.Build {
   def module(name: String, settings: Seq[Def.Setting[_]] = Seq.empty) =
     Project(name,
             file(name.replace("-", "")),
-            settings = Defaults.defaultSettings ++
+            settings = Defaults.coreDefaultSettings ++
               Common.settings ++
               Common.testSettings ++
               settings)
       .dependsOn(ufcheck % "test->test")
 
-  lazy val core = module("core", xmlDependency)
+  lazy val core = module("core", xmlDependency).
+    enablePlugins(sbtbuildinfo.BuildInfoPlugin)
 
   lazy val liftjson = module("lift-json")
     .dependsOn(core)
@@ -61,6 +62,6 @@ object Builds extends sbt.Build {
   /** Util module for using unfiltered with scalacheck */
   lazy val ufcheck = Project(
     "ufcheck", file("ufcheck"), settings =
-      Defaults.defaultSettings ++ Seq(scalaVersion := Common.defaultScalaVersion)
+      Defaults.coreDefaultSettings ++ Seq(scalaVersion := Common.defaultScalaVersion)
   )
 }
